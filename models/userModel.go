@@ -14,10 +14,11 @@ var db = &gorm.DB{}
 
 type User struct {
 	gorm.Model
-	UserName string `json:"user_name"`
-	FullName string `json:"full_name"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	UserName     string `json:"user_name"`
+	FullName     string `json:"full_name"`
+	Email        string `json:"email"`
+	Password     string `json:"password"`
+	ProfileImage string `json:"profile_image"`
 }
 
 type Token struct {
