@@ -3,7 +3,6 @@ package models
 import (
 	"time"
 
-	"github.com/Isaiah-peter/instagram-clone/database"
 	"github.com/Isaiah-peter/instagram-clone/utils"
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
@@ -27,11 +26,11 @@ type Token struct {
 	jwt.StandardClaims
 }
 
-func init() {
-	database.Connect()
-	db = database.GetDB()
-	db.AutoMigrate(&User{})
-}
+// func init() {
+// 	database.Connect()
+// 	db = database.GetDB()
+// 	db.AutoMigrate(&User{})
+// }
 
 func (u *User) CreateUser() *User {
 	Hashpassword, _ := utils.Hashpassword(u.Password)
