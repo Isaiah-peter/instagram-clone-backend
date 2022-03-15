@@ -3,6 +3,7 @@ package models
 import (
 	"time"
 
+	"github.com/Isaiah-peter/instagram-clone/database"
 	"github.com/Isaiah-peter/instagram-clone/utils"
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
@@ -26,17 +27,23 @@ type Token struct {
 	jwt.StandardClaims
 }
 
-// func init() {
-// 	database.Connect()
-// 	db = database.GetDB()
-// 	db.AutoMigrate(&User{})
-// }
+func init() {
+	database.Connect()
+	db = database.GetDB()
+	db.AutoMigrate(&User{})
+}
 
 func (u *User) CreateUser() *User {
 	Hashpassword, _ := utils.Hashpassword(u.Password)
 	u.Password = Hashpassword
 	db.Create(u)
 	return u
+}
+
+func GetUserById(id int) (*User, *gorm.DB) {
+	var user *User
+	d := db.Where("ID = ?", id).Find(&user)
+	return user, d
 }
 
 func FindOne(email string, password string) map[string]interface{} {

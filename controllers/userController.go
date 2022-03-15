@@ -84,3 +84,36 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 	res, _ := json.Marshal(result)
 	utils.Result(res, w, r)
 }
+
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	var user *models.User
+	if err := json.NewDecoder(r.Body).Decode(user); err != nil {
+		w.Write([]byte("fail to decode"))
+	}
+	utils.UseToken(r)
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		panic(err)
+	}
+	user1, db := models.GetUserById(id)
+	if user.Email != "" {
+		user1.Email = user.Email
+	}
+	if user.FullName != "" {
+		user1.FullName = user.FullName
+	}
+	if user.ProfileImage != "" {
+		user1.ProfileImage = user.ProfileImage
+	}
+	if user.UserName != "" {
+		user1.UserName = user.UserName
+	}
+	if user.Password != "" {
+		hash, _ := utils.Hashpassword(user.Password)
+		user1.Password = hash
+	}
+	db.Save(user1)
+	res, _ := json.Marshal(user1)
+	w.Write(res)
+}
